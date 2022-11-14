@@ -7,7 +7,6 @@ import { useI18N } from '../../context'
 import { IExpenseData } from '../../interfaces'
 import { IconButton } from '../ui'
 import { currency, dateFunctions } from '../../utils'
-import { AddOrEditExpenseModal } from './'
 
 interface Props {
   expenses: IExpenseData[]
@@ -115,7 +114,6 @@ export const CardExpenses: FC<Props> = ({ expenses }) => {
           </Table.Body>
         </Table>
       </Card.Body>
-      {/* <AddOrEditExpenseModal isOpen onClose={ () => {} } type='edit'/> */}
     </Card>
   )
 }
