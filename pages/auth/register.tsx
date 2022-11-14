@@ -172,7 +172,6 @@ const RegisterPage = () => {
             <Button
               auto
               className='w-full bg-gradient-to-r from-github-primary to-github-secondary'
-              type='submit'
               css={{
                 fontWeight: '$bold'
               }}

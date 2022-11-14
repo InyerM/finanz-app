@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db, seedData } from '../../data/database'
-import { User } from '../../data/models'
+import { Expense, User } from '../../data/models'
 
 type Data = {
   message: string
@@ -9,12 +9,23 @@ type Data = {
 export default async function handler(req: NextApiRequest, res: NextApiResponse<Data>) {
 
   if(process.env.NODE_ENV === 'production') return res.status(401).json({ message: 'Not allowed' })
+  if(req.method !== 'POST') return res.status(405).json({ message: 'Method Not Allowed' })
   try {
     await db.connect()
 
     await User.deleteMany()
+    await Expense.deleteMany()
 
-    await User.insertMany(seedData.users)
+    const users = await User.insertMany(seedData.users)
+
+    let { expenses } = seedData
+
+    expenses = expenses.map(expense => {
+      expense.userId = users[0]._id
+      return expense
+    })
+
+    await Expense.insertMany(expenses)
 
     await db.disconnect()
     res.status(200).json({ message: 'Successfully' })

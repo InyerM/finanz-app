@@ -1,27 +1,25 @@
 import type { AppProps } from 'next/app'
 import { NextUIProvider } from '@nextui-org/react'
-import { Provider } from 'react-redux'
 import { SessionProvider } from "next-auth/react"
 import '../styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { I18NProvider, AuthProvider } from '../context'
-import { store } from '../redux'
+import { I18NProvider, AuthProvider, ExpenseProvider } from '../context'
 import { ToastContainer } from 'react-toastify'
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <SessionProvider>
-      <Provider store={ store }>
+      <I18NProvider>
         <AuthProvider>
-          <NextUIProvider>
-            <I18NProvider>
+          <ExpenseProvider>
+            <NextUIProvider>
               <Component {...pageProps} />
               <ToastContainer />
-            </I18NProvider>
-          </NextUIProvider>
+            </NextUIProvider>
+          </ExpenseProvider>
         </AuthProvider>
-      </Provider>
+      </I18NProvider>
     </SessionProvider>
   )
 }

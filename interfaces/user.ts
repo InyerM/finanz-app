@@ -4,6 +4,8 @@ export interface IUser {
   email: string
   password?: string
   role: 'admin' | 'user'
+  budget: number
+  preferredLocale: string
   createdAt?: string
   updatedAt?: string
 }
@@ -14,4 +16,4 @@ export interface IAuthResponse {
   message: string
 }
 
-export type IAuthUser = Pick<IUser, 'name' | 'email' | 'role'>
+export type IAuthUser = Pick<IUser, 'name' | 'email' | 'role' | 'budget' | 'preferredLocale'>

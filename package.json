@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/select": "^2.0.13",
     "@headlessui/react": "^1.7.4",
     "@nextui-org/react": "^1.0.0-beta.10",
     "@reduxjs/toolkit": "^1.9.0",
@@ -22,13 +23,15 @@
     "eslint-config-next": "13.0.2",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "mongoose": "^6.7.2",
     "next": "13.0.2",
     "next-auth": "^4.16.4",
     "react": "18.2.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.39.3",
-    "react-redux": "^8.0.5",
+    "react-icons": "^4.6.0",
     "react-toastify": "^9.1.1",
     "typescript": "4.8.4"
   },

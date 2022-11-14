@@ -34,13 +34,13 @@ const loginUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const passwordsMatch = bcrypt.compareSync(password, user.password!)
     if (!passwordsMatch) return res.status(401).json({ message: 'You have bad credentials - Password' })
 
-    const { role, name, _id } = user
+    const { role, name, _id, preferredLocale, budget } = user
 
     const token = jwt.generateToken(_id, email)
 
     return res.status(200).json({ 
       message: 'You are logged in',
-      user: { email, role, name },
+      user: { email, role, name, budget, preferredLocale },
       token, 
     })
   } catch (error: any) {

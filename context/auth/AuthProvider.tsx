@@ -4,13 +4,12 @@ import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { finanzApi } from '../../api'
-import { IAuthUser, IAuthResponse } from '../../interfaces'
+import { IAuthUser, IAuthResponse, IUser } from '../../interfaces'
 import { AuthContext, authReducer } from './'
 
 export interface AuthState {
   isLoggedIn: boolean
   user?: IAuthUser
-  locale: string
 }
 
 interface Props {
@@ -20,22 +19,30 @@ interface Props {
 const AUTH_INITIAL_STATE: AuthState = {
   isLoggedIn: false,
   user: undefined,
-  locale: 'es'
 }
 
 export const AuthProvider: FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer( authReducer, AUTH_INITIAL_STATE )
-  const router = useRouter()
   const { data, status } = useSession()
-  console.log("🚀 ~ file: AuthProvider.tsx ~ line 31 ~ status", status)
-  console.log("🚀 ~ file: AuthProvider.tsx ~ line 31 ~ data", data)
+  const { asPath, replace, locale } = useRouter()
 
   useEffect(() => {
     if ( status === 'authenticated' ) {
+      const user = data?.user as IAuthUser
+      if (locale !== user.preferredLocale) {
+        replace( asPath, asPath, { locale: user.preferredLocale } )
+      }
+    }
+  }, [data, status, asPath, locale, replace])
+
+  useEffect(() => {
+    if ( status === 'authenticated' ) {
+      const user = data?.user as IUser
+      Cookies.set('userId', user?._id)
+      
       dispatch({ type: 'AUTH_LOGIN', payload: data?.user as IAuthUser })
     }
-
   }, [data, status])
 
   const logginUser = async( email: string, password: string ): Promise<boolean> => {

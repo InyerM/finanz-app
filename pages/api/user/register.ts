@@ -10,7 +10,7 @@ type Data =
 | { message: string }
 | IAuthResponse
 
-interface IValidateUser extends Omit<IAuthUser, 'role'> {
+interface IValidateUser extends Omit<IAuthUser, 'role' | 'budget' | 'preferredLocale'> {
   password: string
 }
 
@@ -50,7 +50,7 @@ const registerUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
 
     await db.disconnect()
 
-    const { _id } = newUser
+    const { _id, budget, role, preferredLocale } = newUser
 
     const token = jwt.generateToken(_id, email)
 
@@ -58,8 +58,10 @@ const registerUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
       message: 'You are logged in',
       user: { 
         email,
-        role: 'user', 
+        role,
         name,
+        budget,
+        preferredLocale,
       },
       token, 
     })

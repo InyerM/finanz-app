@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useSession } from 'next-auth/react'
 import { Text } from "@nextui-org/react"
 
 import { AuthContext, useI18N } from '../../context'
@@ -10,6 +11,7 @@ import { navbarHome, navbarClient, navbarAdmin } from './'
 export const Navbar = () => {
   const { t } = useI18N()
   const { push, asPath } = useRouter()
+  const { status } = useSession()
   const { isLoggedIn, user, logout } = useContext(AuthContext)
 
   const navigateTo = (path: string, name: string) => {
@@ -42,17 +44,17 @@ export const Navbar = () => {
       </section>
       <section className='flex flex-col gap-1 md:flex-row md:gap-8'>
         {
-          isLoggedIn && navbarClient.map(({ path, name }) => {
+          isLoggedIn && status !== 'loading' && navbarClient.map(({ path, name }) => {
             return <NavItem key={ name } name={ name } path={ path }  onClick={ navigateTo }/>
           })
         }
         {
-          !isLoggedIn && navbarHome.map(({ path, name }) => {
+          !isLoggedIn && status !== 'loading' && navbarHome.map(({ path, name }) => {
             return <NavItem key={ name } name={ name } path={ path }  onClick={ navigateTo }/>
           })
         }
         {
-          isLoggedIn && user?.role === 'admin' && navbarAdmin.map(({ path, name }) => {
+          isLoggedIn && status !== 'loading' && user?.role === 'admin' && navbarAdmin.map(({ path, name }) => {
             return <NavItem key={ name } name={ name } path={ path }  onClick={ navigateTo }/>
           })
         }

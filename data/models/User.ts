@@ -20,6 +20,16 @@ const userSchema = new Schema({
     required: true,
     enum: ['admin', 'user'],
   },
+  budget: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  preferredLocale: {
+    type: String,
+    required: true,
+    default: 'es',
+  }
 }, {
   timestamps: true,
 })

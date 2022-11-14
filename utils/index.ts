@@ -1,3 +1,5 @@
 export * as validations from './validations'
 export * as jwt from './jwt'
+export * as dateFunctions from './dateFunctions'
+export * as currency from './currency'
 export * from './capitalizeFirstLetter'
