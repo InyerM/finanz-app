@@ -54,11 +54,11 @@ export const createExpense = async (userId: string, expense: IExpense): Promise<
 
 }
 
-export const updateExpense = async (expense: IExpense): Promise<IResponse> => {
+export const updateExpense = async (expense: IExpense, _id: string): Promise<IResponse> => {
   try {
     await db.connect()
 
-    const updatedExpense = await Expense.findByIdAndUpdate(expense._id, expense, { new: true })
+    const updatedExpense = await Expense.findByIdAndUpdate(_id, expense, { new: true })
 
     await db.disconnect()
 
@@ -99,11 +99,11 @@ export const deleteExpense = async (_id: string): Promise<IResponse> => {
   }
 }
 
-export const getExpenseByName = async (name: string, userId: string): Promise<IResponse> => {
+export const getExpenseById = async (_id: string, userId: string): Promise<IResponse> => {
   try {
     await db.connect()
 
-    const expense = await Expense.findOne({ name, userId }).select('name description category amount date createdAt updatedAt')
+    const expense = await Expense.findOne({ _id, userId }).select('name description category amount date createdAt updatedAt')
 
     await db.disconnect()
 

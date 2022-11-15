@@ -1,59 +1,24 @@
+import { FC } from 'react'
+import { GetServerSideProps } from 'next'
 import { Container, Grid, Spacer } from "@nextui-org/react"
 import { MainLayout } from "../../../components/layout"
 import { CardBudget, CardExpenses } from "../../../components/finance"
 import { useI18N } from "../../../context"
-import { IExpenseData } from "../../../interfaces"
+import { IExpenseData, IExpenseResponse } from "../../../interfaces"
 
 import 'react-circular-progressbar/dist/styles.css'
+import { finanzApi } from '../../../api'
+import { expenseService } from '../../../data'
 
-const expenses: IExpenseData[] = [
-  {
-    name: 'Café',
-    description: 'Café en la oficina',
-    category: 'food',
-    amount: 2.5,
-    date: '2021-01-01',
-  },
-  {
-    name: 'Gym',
-    description: 'Suscripción al gimnasio',
-    category: 'health',
-    amount: 50,
-    date: '2021-01-01',
-  },
-  {
-    name: 'Café',
-    description: 'Café en la oficina',
-    category: 'food',
-    amount: 2.5,
-    date: '2021-01-01',
-  },
-  {
-    name: 'Gym',
-    description: 'Suscripción al gimnasio',
-    category: 'health',
-    amount: 50,
-    date: '2021-01-01',
-  },
-  {
-    name: 'Café',
-    description: 'Café en la oficina',
-    category: 'food',
-    amount: 2.5,
-    date: '2021-01-01',
-  },
-  {
-    name: 'Gym',
-    description: 'Suscripción al gimnasio',
-    category: 'health',
-    amount: 50,
-    date: '2021-01-01',
-  },
-]
+interface Props {
+  expenses: IExpenseData[]
+  ok: boolean
+}
 
-
-const FinancePage = () => {
+const FinancePage: FC<Props> = ({ expenses, ok }) => {
+  console.log("🚀 ~ file: index.tsx ~ line 18 ~ expenses", expenses)
   const { t } = useI18N()
+  // const { expenses, isLoading, ok } = useExpenses('/expense')
   return (
     <MainLayout title={ t('finance_title') } description={ t('finance_description') }>
       <Container className="max-w-2xl">
@@ -63,10 +28,32 @@ const FinancePage = () => {
       <Spacer y={ 3 }/>
 
       <Container className="max-w-5xl">
-        <CardExpenses expenses={ expenses }/>
+        <CardExpenses expenses={ expenses } isLoading={ !expenses && !ok } isError={ ok }/>
       </Container>
     </MainLayout>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  try {
+    const { userId } = req.cookies
+    const { expenses, ok } = await expenseService.getExpenses(userId || '')
+    return {
+      props: {
+        expenses: JSON.parse(JSON.stringify(expenses)) || [],
+        ok: ok || false
+      }
+    }
+  } catch (error) {
+    return {
+      props: {
+        expenses: [],
+        ok: false
+      }
+    }
+  }
+
 }
 
 export default FinancePage

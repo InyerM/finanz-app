@@ -1,5 +1,4 @@
 export * from './CardBudget'
 export * from './CardExpenses'
-export * from './EditExpenseModal'
 export * from './BudgetModal'
 export * from './AddOrEditExpenseForm'

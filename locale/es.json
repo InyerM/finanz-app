@@ -68,5 +68,11 @@
   "expense_added": "Gasto añadido",
   "expense_updated": "Gasto actualizado",
   "expense_deleted": "Gasto eliminado",
-  "go_back": "Ir atrás"
+  "expense_not_added": "Expense not added",
+  "error_adding_expense": "Ha ocurrido un error al añadir el gasto, por favor intente de nuevo",
+  "error_updating_expense": "Ha ocurrido un error al actualizar el gasto, por favor intente de nuevo",
+  "error_deleting_expense": "Ha ocurrido un error al eliminar el gasto, por favor intente de nuevo",
+  "error_getting_expenses": "Ha ocurrido un error al obtener los gastos, por favor intente de nuevo",
+  "go_back": "Ir atrás",
+  "loading": "Cargando"
 }

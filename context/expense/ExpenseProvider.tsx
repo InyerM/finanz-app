@@ -23,58 +23,70 @@ export const ExpenseProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer( expenseReducer, EXPENSE_INITIAL_STATE )
   const { t } = useI18N()
 
-  const addExpense = async (expense: IExpenseData) => {
+  const addExpense = async (expense: IExpenseData): Promise<boolean> => {
     try {
       const { data: { ok, expense: newExpense } } = await finanzApi.post<IExpenseResponse>('/expense', { expense })
       if (ok) {
         toast.success(t('expense_added'), toastConfig)
-        return dispatch({ type: 'ADD_EXPENSE', payload: newExpense as IExpense })
+        dispatch({ type: 'ADD_EXPENSE', payload: newExpense as IExpense })
+        return true
       }
 
-      toast.error(t('expense_not_added'), toastConfig)
+      toast.error(t('error_adding_expense'), toastConfig)
+      return false
     } catch (error) {
       toast.error(t('error_adding_expense'), toastConfig)
+      return false
     }
   }
 
-  const getExpenses = async () => {
+  const getExpenses = async (): Promise<boolean> => {
     try {
       const { data: { ok, expenses } } = await finanzApi.get<IExpenseResponse>('/expense')
       if (ok) {
-        return dispatch({ type: 'SET_EXPENSES', payload: expenses as IExpense[] })
+        dispatch({ type: 'SET_EXPENSES', payload: expenses as IExpense[] })
+        return true
       }
 
       toast.error(t('error_getting_expenses'), toastConfig)
+      return false
     } catch (error) {
       toast.error(t('error_getting_expenses'), toastConfig)
+      return false
     }
   }
 
-  const deleteExpense = async (_id: string) => {
+  const deleteExpense = async (_id: string): Promise<boolean> => {
     try {
       const { data: { ok } } = await finanzApi.delete<IExpenseResponse>(`/expense/${_id}`)
       if (ok) {
         toast.success(t('expense_deleted'), toastConfig)
-        return dispatch({ type: 'DELETE_EXPENSE', payload: _id })
+        dispatch({ type: 'DELETE_EXPENSE', payload: _id })
+        return true
       } 
 
       toast.error(t('error_deleting_expense'), toastConfig)
+      return false
     } catch (error) {
       toast.error(t('error_deleting_expense'), toastConfig)
+      return false
     }
   }
 
-  const updateExpense = async (expense: IExpenseData, _id: string) => {
+  const updateExpense = async (expense: IExpenseData, _id: string): Promise<boolean> => {
     try {
       const { data: { ok, expense: updatedExpense } } = await finanzApi.put<IExpenseResponse>(`/expense/${_id}`, { expense })
       if (ok) {
         toast.success(t('expense_updated'), toastConfig)
-        return dispatch({ type: 'UPDATE_EXPENSE', payload: updatedExpense as IExpense })
+        dispatch({ type: 'UPDATE_EXPENSE', payload: updatedExpense as IExpense })
+        return true
       }
 
       toast.error(t('error_updating_expense'), toastConfig)
+      return false
     } catch (error) {
       toast.error(t('error_updating_expense'), toastConfig) 
+      return false
     }
   }
 

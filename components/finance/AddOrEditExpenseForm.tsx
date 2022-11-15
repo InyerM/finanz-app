@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
-import { Button, Col, Divider, Grid, Input, Row, Spacer, Text, Textarea } from '@nextui-org/react'
+import { Button, Col, Container, Divider, Grid, Input, Loading, Row, Spacer, Text, Textarea } from '@nextui-org/react'
 import { HiOutlineDocumentText, HiOutlineCurrencyDollar } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import { Select } from '@chakra-ui/select'
@@ -35,9 +35,18 @@ export const AddOrEditExpeneseForm: FC<Props> = ({ expense, type }) => {
   })
   const { t } = useI18N()
   const { addExpense, updateExpense } = useContext(ExpenseContext)
+  const [loading, setLoading] = useState(false)
+  const route = useRouter()
 
-  const onSubmit = (data: FormData) => {
-    type === 'add' ? addExpense(data) : updateExpense(data, expense?._id || '')
+  const onSubmit = async (data: FormData) => {
+    let result = false
+    setLoading(true)
+    type === 'add' ? result = await addExpense(data) : result = await updateExpense(data, expense?._id || '')
+    
+    setLoading(false)
+    if (result) {
+      route.push('/app/finance')
+    }
   }
 
   const router = useRouter()
@@ -109,11 +118,12 @@ export const AddOrEditExpeneseForm: FC<Props> = ({ expense, type }) => {
           <Button
             auto
             size='lg'
-            className='w-full bg-gradient-to-r from-tertiary to-quaternary hover:opacity-90'
+            className='w-full bg-gradient-to-r from-tertiary to-quaternary hover:opacity-90 disabled:text-white disabled:saturate-50'
             css={{
               fontWeight: '$bold'
             }}
             onClick={ router.back }
+            disabled={ loading }
           >
             { t('go_back') }
           </Button>
@@ -122,16 +132,22 @@ export const AddOrEditExpeneseForm: FC<Props> = ({ expense, type }) => {
           <Button
             auto
             size='lg'
-            className='w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90'
+            className='w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 disabled:text-white disabled:saturate-50'
             css={{
               fontWeight: '$bold'
             }}
             type='submit'
+            disabled={ loading }
+            iconRight={ loading && <Loading size='sm' color='white' type='points-opacity'/> }
           >
             { type === 'add' ? t('add_expense') : t('edit_expense') }
           </Button>
         </Col>
       </Row>
+      <Spacer y={ 2 }/>
+      <Container className={`max-w-2xl mx-auto justify-center fadeIn ${ loading ? 'flex' : 'hidden'}`}>
+        <Loading type='points-opacity' size='xl'/>
+      </Container>
     </form>
   )
 }

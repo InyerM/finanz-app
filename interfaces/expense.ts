@@ -11,6 +11,7 @@ export interface IExpense {
 }
 
 export interface IExpenseData {
+  _id?: string
   name: string
   description?: string
   category: 'food' | 'transport' | 'entertainment' | 'health' | 'education' | 'other'

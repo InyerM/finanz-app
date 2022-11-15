@@ -18,7 +18,7 @@ export const expenseReducer = (state: ExpenseState, action: ExpenseAction): Expe
     case 'DELETE_EXPENSE':
       return {
         ...state,
-        expenses: state.expenses.filter(expense => expense._id !== action.payload)
+        expenses: state.expenses.filter(expense => expense?._id !== action.payload)
       }
 
     case 'UPDATE_EXPENSE':

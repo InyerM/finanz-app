@@ -5,10 +5,10 @@ interface ContextProps {
   expenses: IExpense[]
 
   // Methods
-  addExpense: (expense: IExpenseData) => void
-  getExpenses: () => void
-  deleteExpense: (_id: string) => void
-  updateExpense: (expense: IExpenseData, _id: string) => void
+  addExpense: (expense: IExpenseData) => Promise<boolean>
+  getExpenses: () => Promise<boolean>
+  deleteExpense: (_id: string) => Promise<boolean>
+  updateExpense: (expense: IExpenseData, _id: string) => Promise<boolean>
 }
 
 export const ExpenseContext = createContext( {} as ContextProps )

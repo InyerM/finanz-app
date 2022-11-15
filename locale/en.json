@@ -68,5 +68,11 @@
   "expense_added": "Expense added",
   "expense_updated": "Expense updated",
   "expense_deleted": "Expense deleted",
-  "go_back": "Go back"
+  "expense_not_added": "Expense not added",
+  "error_adding_expense": "There was an error adding the expense, please try again",
+  "error_updating_expense": "There was an error updating the expense, please try again",
+  "error_deleting_expense": "There was an error deleting the expense, please try again",
+  "error_getting_expenses": "There was an error getting the expenses, please try again",
+  "go_back": "Go back",
+  "loading": "Loading"
 }
