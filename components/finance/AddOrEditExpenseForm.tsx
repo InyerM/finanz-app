@@ -1,7 +1,7 @@
 import { FC, useContext, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Button, Col, Container, Divider, Grid, Input, Loading, Row, Spacer, Text, Textarea } from '@nextui-org/react'
-import { HiOutlineDocumentText, HiOutlineCurrencyDollar } from 'react-icons/hi'
+import { HiOutlineDocumentText, HiOutlineCurrencyDollar, HiOutlineArrowCircleLeft } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import { Select } from '@chakra-ui/select'
 import { IExpense, IExpenseData } from '../../interfaces'
@@ -105,7 +105,12 @@ export const AddOrEditExpeneseForm: FC<Props> = ({ expense, type }) => {
             type='number'
             placeholder={ t('expense_amount') }
             contentLeft={<HiOutlineCurrencyDollar color="#222" size={35} />}
-            { ...register('amount', { required: t('required_field', t('amount')) }) }
+            { ...register('amount', { 
+              required: t('required_field', t('amount')),
+              validate: {
+                positive: (value) => value > 0 || t('positive_expense')
+              }
+            }) }
             helperColor='error'
             helperText={ errors.amount?.message }
             status={ !!errors.amount ? 'error' : 'default' }
@@ -122,6 +127,7 @@ export const AddOrEditExpeneseForm: FC<Props> = ({ expense, type }) => {
             css={{
               fontWeight: '$bold'
             }}
+            icon={<HiOutlineArrowCircleLeft size={ 25 } />}
             onClick={ router.back }
             disabled={ loading }
           >

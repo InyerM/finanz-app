@@ -1,11 +1,15 @@
-import { FC, useReducer, useEffect } from 'react'
+import { FC, useReducer, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+
 import { finanzApi } from '../../api'
-import { IAuthUser, IAuthResponse, IUser } from '../../interfaces'
+import { IAuthUser, IAuthResponse, IUser, IBudgetResponse } from '../../interfaces'
 import { AuthContext, authReducer } from './'
+import { useI18N } from '../'
+import { toastConfig } from '../../constants'
 
 export interface AuthState {
   isLoggedIn: boolean
@@ -26,6 +30,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer( authReducer, AUTH_INITIAL_STATE )
   const { data, status } = useSession()
   const { asPath, replace, locale } = useRouter()
+  const { t } = useI18N()
 
   useEffect(() => {
     if ( status === 'authenticated' ) {
@@ -41,9 +46,21 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       const user = data?.user as IUser
       Cookies.set('userId', user?._id)
       
-      dispatch({ type: 'AUTH_LOGIN', payload: data?.user as IAuthUser })
+      getUserData()
     }
   }, [data, status])
+
+  const getUserData = async () => {
+    try {
+      const { data } = await finanzApi.get<IUser>('/user')
+  
+      if (data) {
+        dispatch({ type: 'AUTH_LOGIN', payload: data })
+      }
+    } catch (error) {
+      toast.error( t('error_getting_info'), toastConfig )
+    }
+  }
 
   const logginUser = async( email: string, password: string ): Promise<boolean> => {
     try {
@@ -97,6 +114,35 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     signOut()
   }
 
+  const addBudget = async(amount: number) => {
+    try {
+      const { data } = await finanzApi.post<IBudgetResponse>('/user/budget', { budget: amount })
+      console.log("🚀 ~ file: AuthProvider.tsx ~ line 120 ~ addBudget ~ data", data)
+      dispatch({
+        type: 'AUTH_UPDATE_BUDGET',
+        payload: data?.user as IAuthUser
+      })
+
+      toast.success(t('budget_added'), toastConfig)
+    } catch (error) {
+      toast.error(t('error_add_budget'), toastConfig)
+    }
+  }
+
+  const updateBudget = async(amount: number) => {
+    try {
+      const { data } = await finanzApi.put<IAuthResponse>('/user/budget', { budget: amount })
+      dispatch({
+        type: 'AUTH_UPDATE_BUDGET',
+        payload: data.user
+      })
+
+      toast.success(t('budget_updated'), toastConfig)
+    } catch (error) {
+      toast.error(t('error_update_budget'), toastConfig)
+    }
+  }
+
   return (
     <AuthContext.Provider value={{ 
       ...state,
@@ -104,7 +150,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       //methods
       logginUser,
       registerUser,
-      logout
+      logout,
+
+      // budget
+      addBudget,
+      updateBudget
     }}>
       { children }
     </AuthContext.Provider>

@@ -1,13 +1,14 @@
-import { FC, useReducer } from 'react'
+import { FC, useReducer, useEffect, useContext } from 'react'
+import { toast } from 'react-toastify'
 import { ExpenseContext, expenseReducer } from './'
 import { IExpense, IExpenseData, IExpenseResponse } from '../../interfaces'
 import { finanzApi } from '../../api'
-import { toast } from 'react-toastify'
 import { toastConfig } from '../../constants'
-import { useI18N } from '../i18n/i18n';
+import { AuthContext, useI18N } from '../'
 
 export interface ExpenseState {
   expenses: IExpense[]
+  isLoading: boolean
 }
 
 interface Props {
@@ -16,11 +17,13 @@ interface Props {
 
 const EXPENSE_INITIAL_STATE: ExpenseState = {
   expenses: [],
+  isLoading: false
 }
 
 export const ExpenseProvider: FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer( expenseReducer, EXPENSE_INITIAL_STATE )
+  const { isLoggedIn } = useContext(AuthContext)
   const { t } = useI18N()
 
   const addExpense = async (expense: IExpenseData): Promise<boolean> => {
@@ -40,11 +43,12 @@ export const ExpenseProvider: FC<Props> = ({ children }) => {
     }
   }
 
-  const getExpenses = async (): Promise<boolean> => {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const setExpenses = async (): Promise<boolean> => {
     try {
       const { data: { ok, expenses } } = await finanzApi.get<IExpenseResponse>('/expense')
       if (ok) {
-        dispatch({ type: 'SET_EXPENSES', payload: expenses as IExpense[] })
+        dispatch({ type: 'SET_EXPENSES', payload: expenses as IExpense[] || [] })
         return true
       }
 
@@ -90,13 +94,18 @@ export const ExpenseProvider: FC<Props> = ({ children }) => {
     }
   }
 
+  useEffect(() => {
+    if(isLoggedIn) setExpenses()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoggedIn])
+
   return (
     <ExpenseContext.Provider value={{ 
       ...state,
 
       // Methods
       addExpense,
-      getExpenses,
+      setExpenses,
       deleteExpense,
       updateExpense,
     }}>

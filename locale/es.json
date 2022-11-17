@@ -74,5 +74,16 @@
   "error_deleting_expense": "Ha ocurrido un error al eliminar el gasto, por favor intente de nuevo",
   "error_getting_expenses": "Ha ocurrido un error al obtener los gastos, por favor intente de nuevo",
   "go_back": "Ir atrás",
-  "loading": "Cargando"
+  "loading": "Cargando",
+  "close": "Cerrar",
+  "accept": "Aceptar",
+  "budget_amount": "Ingrese la cantidad de presupuesto",
+  "max_budget": "El presupuesto máximo es ${1}",
+  "positive_budget": "El presupuesto debe ser un número positivo",
+  "positive_expense": "El gasto debe ser un número positivo",
+  "budget_added": "Presupuesto añadido correctamente",
+  "error_add_budget": "Ha ocurrido un error al añadir el presupuesto, por favor intente de nuevo",
+  "budget_updated": "Presupuesto actualizado correctamente",
+  "error_update_budget": "Ha ocurrido un error al actualizar el presupuesto, por favor intente de nuevo",
+  "error_getting_info": "Ha ocurrido un error al obtener la información, por favor intente de nuevo"
 }

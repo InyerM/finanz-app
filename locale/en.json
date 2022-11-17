@@ -74,5 +74,16 @@
   "error_deleting_expense": "There was an error deleting the expense, please try again",
   "error_getting_expenses": "There was an error getting the expenses, please try again",
   "go_back": "Go back",
-  "loading": "Loading"
+  "loading": "Loading",
+  "close": "Close",
+  "accept": "Accept",
+  "budget_amount": "Enter an amount for your budget",
+  "max_budget": "Max budget allowed is ${1}",
+  "positive_budget": "Budget must be positive",
+  "positive_expense": "Expense must be positive",
+  "budget_added": "Budget added successfully",
+  "error_add_budget": "There was an error adding the budget, please try again",
+  "budget_updated": "Budget updated successfully",
+  "error_update_budget": "There was an error updating the budget, please try again",
+  "error_getting_info": "There was an error getting the information, please try again"
 }

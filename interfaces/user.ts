@@ -16,4 +16,9 @@ export interface IAuthResponse {
   message: string
 }
 
+export interface IBudgetResponse {
+  user?: IAuthUser
+  message: string
+}
+
 export type IAuthUser = Pick<IUser, 'name' | 'email' | 'role' | 'budget' | 'preferredLocale'>

@@ -43,11 +43,11 @@ const updateExpense = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
   if (!expense || !id) return res.status(400).json({ message: 'Expense is required', ok: false })
 
   try {
-    const { ok, error } = await expenseService.updateExpense(expense, id.toString())
+    const { ok, error, expense: updatedExpense } = await expenseService.updateExpense(expense, id.toString())
 
     if (!ok) return res.status(400).json({ message: error || 'There was a problem', ok })
 
-    return res.status(200).json({ message: 'Expense updated', ok: true })
+    return res.status(200).json({ ok: true, expense: updatedExpense as IExpense })
   } catch (error: any) {
     return res.status(500).json({ message: error.message, ok: false })
   }

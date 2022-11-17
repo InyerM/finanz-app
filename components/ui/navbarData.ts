@@ -19,10 +19,10 @@ export const navbarHome: INavbarData[] = [
 ]
 
 export const navbarClient: INavbarData[] = [
-  {
-    name: 'profile',
-    path: '/app/profile',
-  },
+  // {
+  //   name: 'profile',
+  //   path: '/app/profile',
+  // },
   {
     name: 'finance',
     path: '/app/finance',
@@ -34,8 +34,8 @@ export const navbarClient: INavbarData[] = [
 ]
 
 export const navbarAdmin: INavbarData[] = [
-  {
-    name: 'admin',
-    path: '/app/admin',
-  },
+  // {
+  //   name: 'admin',
+  //   path: '/app/admin',
+  // },
 ]

@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db, seedData } from '../../data/database'
-import { Expense, User } from '../../data/models'
+import { Expense, New, User } from '../../data/models'
 
 type Data = {
   message: string
@@ -26,6 +26,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     })
 
     await Expense.insertMany(expenses)
+
+    await New.insertMany(seedData.news.filter(item => item.image !== null))
 
     await db.disconnect()
     res.status(200).json({ message: 'Successfully' })

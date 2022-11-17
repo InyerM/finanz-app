@@ -1,5 +1,18 @@
 import bcrypt from 'bcrypt'
+import news from './news.json'
 
+export interface INewsData {
+  author:       null
+  title:        string
+  description:  string
+  url:          string
+  source:       string
+  image:        null | string
+  category:     string
+  language:     string
+  country:      string
+  published_at: string
+}
 interface IUserData {
   name: string
   email: string
@@ -8,7 +21,6 @@ interface IUserData {
   budget: number
   preferredLocale: string
 }
-
 interface IExpenseData {
   name: string
   description?: string
@@ -21,6 +33,7 @@ interface IExpenseData {
 interface ISeedData {
   users: IUserData[]
   expenses: IExpenseData[]
+  news: INewsData[]
 }
 
 export const seedData: ISeedData = {
@@ -58,4 +71,5 @@ export const seedData: ISeedData = {
       date: '2021-01-01',
     },
   ],
+  news: news.data,
 }

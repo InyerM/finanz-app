@@ -17,7 +17,7 @@ export const MainLayout: FC<Props> = ({ children, title, description }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar />
-      <main className='flex flex-col items-center justify-center max-w-6xl px-5 py-8 mx-auto lg:p-0'>
+      <main className='flex flex-col items-center justify-center max-w-6xl px-0 py-8 mx-0 md:mx-auto lg:p-0'>
         { children }
       </main>
     </div>
